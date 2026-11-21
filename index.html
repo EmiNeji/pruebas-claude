@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bienvenida</title>
+<style>
+  :root {
+    --bg: #f6f3ee;
+    --ink: #1f1d1a;
+    --muted: #6f6a62;
+    --line: #d9d3c9;
+    --btn-bg: #1f1d1a;
+    --btn-ink: #f6f3ee;
+    --bunny: #ffffff;
+    --bunny-inner: #f2b8c0;
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+    --bg: #15161a;
+    --ink: #ece8e1;
+    --muted: #9a958d;
+    --line: #2c2e34;
+    --btn-bg: #ece8e1;
+    --btn-ink: #15161a;
+    --bunny: #e9e4dc;
+    --bunny-inner: #d98f9b;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    transition: background-color .6s ease, color .6s ease;
+  }
+
+  main {
+    text-align: center;
+    max-width: 34rem;
+  }
+  .eyebrow {
+    font-size: .75rem;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 1.25rem;
+  }
+  h1 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.75rem, 8vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    margin: 0;
+  }
+  h1 em { font-style: italic; color: var(--muted); }
+  .rule {
+    width: 48px; height: 1px;
+    background: var(--line);
+    margin: 2rem auto;
+    border: 0;
+  }
+  p.lead {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0 0 4.5rem;
+  }
+
+  /* --- Botón + conejo --- */
+  .stage {
+    position: relative;
+    display: inline-block;
+  }
+  .burrow {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% - 6px);
+    width: 110px;
+    height: 120px;
+    transform: translateX(-50%);
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .bunny {
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%; height: 100%;
+    transform: translateY(105%);
+  }
+  .bunny .fur { fill: var(--bunny); stroke: var(--ink); stroke-width: 2; transition: fill .6s, stroke .6s; }
+  .bunny .inner { fill: var(--bunny-inner); }
+  .bunny .eye { fill: var(--ink); }
+  .bunny .nose { fill: var(--bunny-inner); }
+  .bunny .mouth { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; }
+
+  .stage.pop .bunny { animation: pop 1.5s cubic-bezier(.34,1.4,.5,1) both; }
+  .stage.pop .ear-l { animation: wiggle 1.5s ease both; transform-origin: 40px 58px; }
+  .stage.pop .ear-r { animation: wiggle 1.5s ease .08s both; transform-origin: 60px 58px; }
+
+  @keyframes pop {
+    0%   { transform: translateY(105%); }
+    30%  { transform: translateY(0); }
+    70%  { transform: translateY(0); }
+    100% { transform: translateY(105%); }
+  }
+  @keyframes wiggle {
+    0%, 30% { transform: rotate(0); }
+    40% { transform: rotate(-8deg); }
+    50% { transform: rotate(6deg); }
+    60%, 100% { transform: rotate(0); }
+  }
+
+  .toggle {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .95rem 1.6rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--btn-bg);
+    color: var(--btn-ink);
+    font: inherit;
+    font-size: .95rem;
+    letter-spacing: .02em;
+    cursor: pointer;
+    transition: background-color .6s, color .6s, transform .2s ease, box-shadow .2s ease;
+    box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 8px 24px -12px rgba(0,0,0,.35);
+  }
+  .toggle:hover { transform: translateY(-1px); }
+  .toggle:active { transform: translateY(1px) scale(.98); }
+  .toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+  .toggle svg { width: 18px; height: 18px; }
+
+  footer {
+    margin-top: 3rem;
+    font-size: .8rem;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, .stage.pop .bunny, .stage.pop .ear-l, .stage.pop .ear-r { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Hola</p>
+  <h1>Bienvenida, <em>pasá</em></h1>
+  <hr class="rule">
+  <p class="lead">Un espacio tranquilo para empezar. Tocá el botón y fijate quién aparece.</p>
+
+  <div class="stage" id="stage">
+    <div class="burrow" aria-hidden="true">
+      <svg class="bunny" viewBox="0 0 100 120">
+        <g class="ear-l">
+          <ellipse class="fur" cx="38" cy="34" rx="10" ry="28"/>
+          <ellipse class="inner" cx="38" cy="36" rx="4.5" ry="20"/>
+        </g>
+        <g class="ear-r">
+          <ellipse class="fur" cx="62" cy="34" rx="10" ry="28"/>
+          <ellipse class="inner" cx="62" cy="36" rx="4.5" ry="20"/>
+        </g>
+        <ellipse class="fur" cx="50" cy="88" rx="32" ry="30"/>
+        <circle class="eye" cx="39" cy="82" r="3.2"/>
+        <circle class="eye" cx="61" cy="82" r="3.2"/>
+        <ellipse class="nose" cx="50" cy="92" rx="4" ry="3"/>
+        <path class="mouth" d="M50 95 v4 M50 99 q-4 4 -8 1 M50 99 q4 4 8 1"/>
+      </svg>
+    </div>
+    <button class="toggle" id="toggle" type="button" aria-pressed="false">
+      <svg id="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></svg>
+      <span id="label">Modo oscuro</span>
+    </button>
+  </div>
+
+  <footer>pruebas-claude</footer>
+</main>
+
+<script>
+  const root = document.documentElement;
+  const stage = document.getElementById('stage');
+  const btn = document.getElementById('toggle');
+  const label = document.getElementById('label');
+  const icon = document.getElementById('icon');
+
+  const MOON = '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>';
+  const SUN = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+
+  function apply(theme) {
+    const dark = theme === 'dark';
+    root.dataset.theme = theme;
+    btn.setAttribute('aria-pressed', String(dark));
+    label.textContent = dark ? 'Modo claro' : 'Modo oscuro';
+    icon.innerHTML = dark ? SUN : MOON;
+    try { localStorage.setItem('tema', theme); } catch (e) {}
+  }
+
+  let saved = null;
+  try { saved = localStorage.getItem('tema'); } catch (e) {}
+  apply(saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+
+  let busy = false;
+  btn.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { apply(next); return; }
+    if (busy) return;
+    busy = true;
+    stage.classList.remove('pop');
+    void stage.offsetWidth; // reinicia la animación
+    stage.classList.add('pop');
+    setTimeout(() => apply(next), 450);   // cambia el tema cuando el conejo asoma
+    setTimeout(() => { stage.classList.remove('pop'); busy = false; }, 1500);
+  });
+</script>
+</body>
+</html>
